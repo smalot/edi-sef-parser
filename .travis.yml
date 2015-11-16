@@ -16,4 +16,4 @@ before_script:
   - composer self-update || true
   - composer --prefer-source update
 
-script: ./vendor/atoum/atoum/bin/atoum -d lib/Smalot/Tests/Units/ -ncc
+script: ./vendor/atoum/atoum/bin/atoum -d src/Smalot/Tests/Units/ -ncc
