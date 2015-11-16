@@ -15,7 +15,6 @@ class Parser
      * Parser constructor.
      * @param array $sections
      */
-    // Todo: change to protected
     public function __construct($sections)
     {
         $this->sections = $sections;
@@ -149,13 +148,10 @@ class Parser
      */
     public function extractStdSection()
     {
-        if ($sections = $this->getSections(Sef::SECTION_STD)) {
-            $section = current($sections);
+        $sections = $this->getSections(Sef::SECTION_STD);
+        $section = current($sections);
 
-            return explode(',', trim($section['content'], ','));
-        }
-
-        return array();
+        return explode(',', trim($section['content'], ','));
     }
 
     /**
@@ -163,20 +159,17 @@ class Parser
      */
     public function extractSetsSection()
     {
-        if ($sections = $this->getSections(Sef::SECTION_SETS)) {
-            $sets = array();
+        $sections = $this->getSections(Sef::SECTION_SETS);
+        $sets = array();
 
-            foreach ($sections as $section) {
-                foreach (preg_split('/[\n|\r]+/', $section['content']) as $line) {
-                    list($transaction, $set) = explode('=', $line, 2);
-                    $sets[trim($transaction)] = $this->parseTransactionSet($set);
-                }
+        foreach ($sections as $section) {
+            foreach (preg_split('/[\n|\r]+/', $section['content']) as $line) {
+                list($transaction, $set) = explode('=', $line, 2);
+                $sets[trim($transaction)] = $this->parseTransactionSet($set);
             }
-
-            return $sets;
         }
 
-        return array();
+        return $sets;
     }
 
     /**
@@ -184,20 +177,17 @@ class Parser
      */
     public function extractSegsSection()
     {
-        if ($sections = $this->getSections(Sef::SECTION_SEGS)) {
-            $segments = array();
+        $sections = $this->getSections(Sef::SECTION_SEGS);
+        $segments = array();
 
-            foreach ($sections as $section) {
-                foreach (preg_split('/[\n|\r]+/', $section['content']) as $line) {
-                    list($code, $elements) = explode('=', $line, 2);
-                    $segments[trim($code)] = $this->parseTransactionSegment($elements);
-                }
+        foreach ($sections as $section) {
+            foreach (preg_split('/[\n|\r]+/', $section['content']) as $line) {
+                list($code, $elements) = explode('=', $line, 2);
+                $segments[trim($code)] = $this->parseTransactionSegment($elements);
             }
-
-            return $segments;
         }
 
-        return array();
+        return $segments;
     }
 
     /**
