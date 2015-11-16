@@ -140,7 +140,7 @@ class Parser
             return explode(',', $section['content']);
         }
 
-        return array('', '', '', '', '', '');
+        return array();
     }
 
     /**
@@ -159,17 +159,7 @@ class Parser
      */
     public function extractSetsSection()
     {
-        $sections = $this->getSections(Sef::SECTION_SETS);
-        $sets = array();
-
-        foreach ($sections as $section) {
-            foreach (preg_split('/[\n|\r]+/', $section['content']) as $line) {
-                list($transaction, $set) = explode('=', $line, 2);
-                $sets[trim($transaction)] = $this->parseTransactionSet($set);
-            }
-        }
-
-        return $sets;
+        return $this->extractSimpleSection(Sef::SECTION_SETS, array($this, 'parseTransactionSet'));
     }
 
     /**
@@ -177,17 +167,32 @@ class Parser
      */
     public function extractSegsSection()
     {
-        $sections = $this->getSections(Sef::SECTION_SEGS);
-        $segments = array();
+        return $this->extractSimpleSection(Sef::SECTION_SEGS, array($this, 'parseTransactionSegment'));
+    }
 
-        foreach ($sections as $section) {
+    /**
+     * @param string   $section_name
+     * @param callable $callback
+     *
+     * @return array
+     */
+    protected function extractSimpleSection($section_name, $callback = null)
+    {
+        $parts = array();
+
+        foreach ($this->getSections($section_name) as $section) {
             foreach (preg_split('/[\n|\r]+/', $section['content']) as $line) {
                 list($code, $elements) = explode('=', $line, 2);
-                $segments[trim($code)] = $this->parseTransactionSegment($elements);
+
+                if (is_callable($callback)) {
+                    $parts[trim($code)] = call_user_func_array($callback, array($elements));
+                } else {
+                    $parts[trim($code)] = $elements;
+                }
             }
         }
 
-        return $segments;
+        return $parts;
     }
 
     /**
