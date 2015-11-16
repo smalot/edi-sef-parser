@@ -1,0 +1,10 @@
+.DS_Store
+.php_cs.cache
+composer.phar
+phpunit.xml
+composer.lock
+test*
+.idea/
+coverage/
+samples/
+vendor/

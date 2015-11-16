@@ -1,0 +1,25 @@
+{
+    "name": "smalot/edi-sef-parser",
+    "description": "Sef parser - Edi file definition structure.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sebastien Malot",
+            "email": "sebastien@malot.fr"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "symfony/yaml": "*",
+        "monolog/monolog": "*"
+    },
+    "require-dev": {
+        "atoum/atoum": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Smalot\\Edi\\Sef\\": "src/"
+        }
+    }
+}
