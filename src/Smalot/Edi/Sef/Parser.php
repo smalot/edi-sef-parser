@@ -57,7 +57,7 @@ class Parser
             if (preg_match('/^\.[A-Z0-9]+\s*/i', $line)) {
                 $parts = preg_split('/[\s]+/', $line, 2);
 
-                if ($code && !is_null($content)) {
+                if (!empty($code) && !empty($content)) {
                     $sections[] = array(
                       'code'    => $code,
                       'content' => $content,
@@ -71,7 +71,7 @@ class Parser
             }
         }
 
-        if ($code && !is_null($content)) {
+        if (!empty($code) && !empty($content)) {
             $sections[] = array(
               'code'    => $code,
               'content' => $content,
@@ -135,9 +135,9 @@ class Parser
 
     /**
      * @param string $section_name
-     * @param mixed $default
+     * @param string $default
      *
-     * @return mixed
+     * @return string
      */
     protected function extractSingleSectionWithDefault($section_name, $default = '')
     {
@@ -208,7 +208,7 @@ class Parser
      */
     public function getSections($code = null)
     {
-        if ($code) {
+        if (!is_null($code)) {
             $sections = array();
 
             foreach ($this->sections as $position => $section) {
@@ -252,8 +252,7 @@ class Parser
      */
     public function parseTransactionSegment($text)
     {
-        // Todo
-        return array('foo');
+        return array();
     }
 
     /**
