@@ -3,7 +3,7 @@
 composer.phar
 phpunit.xml
 composer.lock
-test*
+test.php
 .idea/
 coverage/
 samples/
