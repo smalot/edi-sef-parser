@@ -120,13 +120,7 @@ class Parser
      */
     public function extractVersion()
     {
-        if ($sections = $this->getSections(Sef::SECTION_VERSION)) {
-            $section = current($sections);
-
-            return $section['content'];
-        }
-
-        return '1.0';
+        return $this->extractSingleSectionWithDefault(Sef::SECTION_VERSION, '1.0');
     }
 
     /**
@@ -134,13 +128,26 @@ class Parser
      */
     public function extractIniSection()
     {
-        if ($sections = $this->getSections(Sef::SECTION_INI)) {
+        $content = $this->extractSingleSectionWithDefault(Sef::SECTION_INI);
+
+        return explode(',', $content);
+    }
+
+    /**
+     * @param string $section_name
+     * @param mixed $default
+     *
+     * @return mixed
+     */
+    protected function extractSingleSectionWithDefault($section_name, $default = '')
+    {
+        if ($sections = $this->getSections($section_name)) {
             $section = current($sections);
 
-            return explode(',', $section['content']);
+            return $section['content'];
         }
 
-        return array();
+        return $default;
     }
 
     /**
