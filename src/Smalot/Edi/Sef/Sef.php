@@ -76,22 +76,19 @@ class Sef
     }
 
     /**
-     * If the .VER section is included, it must be the first record
-     * in the SEF file. If omitted, version 1.0 is used by default.
-     *
-     * @return string
+     * @param array $private_section
      */
-    public function getVersion()
+    public function addPrivateSection($private_section)
     {
-        return $this->version;
+        $this->private_sections[] = $private_section;
     }
 
     /**
-     * @param string $version
+     * @return array
      */
-    public function setVersion($version)
+    public function getIniSection()
     {
-        $this->version = (string) $version;
+        return $this->ini_section;
     }
 
     /**
@@ -128,14 +125,6 @@ class Sef
     }
 
     /**
-     * @return array
-     */
-    public function getIniSection()
-    {
-        return $this->ini_section;
-    }
-
-    /**
      * PRIVATE is a place for companies or individuals to store information that they need to augment information in the
      * SEF file. It should be ignored by everyone else. The first entry in .PRIVATE is usually a company name.
      * Subsequent lines contain whatever information is needed.
@@ -159,27 +148,69 @@ class Sef
     }
 
     /**
-     * @param array $private_section
+     * @return string
      */
-    public function addPrivateSection($private_section)
+    public function getImplementationName()
     {
-        $this->private_sections[] = $private_section;
+        return $this->ini_section[0];
+    }
+
+    /**
+     * @return string
+     */
+    public function getFunctionalGroupVersion()
+    {
+        return $this->ini_section[2];
+    }
+
+    public function getImplementationDescription()
+    {
+        return $this->ini_section[5];
+    }
+
+    /**
+     * @return string
+     */
+    public function getResponsibleAgencyLabel()
+    {
+        switch ($this->getResponsibleAgencyCode()) {
+            case 'GC':
+                return 'GENCOD';
+            case 'T':
+                return 'T.D.C.C.';
+            case 'TD':
+                return 'TRADACOMS';
+            case 'UN':
+                return 'UN/EDIFACT';
+            case 'X':
+                return 'ASC/X12';
+        }
+
+        return '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getResponsibleAgencyCode()
+    {
+        return $this->ini_section[3];
     }
 
     /**
      * @return array
      */
-    public function getStdSection()
+    public function getSegsSection()
     {
-        return $this->std_section;
+        return $this->segs_section;
     }
 
     /**
-     * @param array $std_section
+     * @param array $segs_section
      */
-    public function setStdSection($std_section)
+    public function setSegsSection($segs_section)
     {
-        $this->std_section = $std_section;
+        $this->segs_section = $segs_section;
     }
 
     /**
@@ -201,16 +232,35 @@ class Sef
     /**
      * @return array
      */
-    public function getSegsSection()
+    public function getStdSection()
     {
-        return $this->segs_section;
+        return $this->std_section;
     }
 
     /**
-     * @param array $segs_section
+     * @param array $std_section
      */
-    public function setSegsSection($segs_section)
+    public function setStdSection($std_section)
     {
-        $this->segs_section = $segs_section;
+        $this->std_section = $std_section;
+    }
+
+    /**
+     * If the .VER section is included, it must be the first record
+     * in the SEF file. If omitted, version 1.0 is used by default.
+     *
+     * @return string
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    /**
+     * @param string $version
+     */
+    public function setVersion($version)
+    {
+        $this->version = (string)$version;
     }
 }
